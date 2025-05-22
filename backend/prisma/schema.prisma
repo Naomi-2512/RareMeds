@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Medication {
+  MedicationId     String   @id
+  Name             String   @unique
+  Description      String
+  Image            String?
+  DateCreated      DateTime @default(now())
+  StockQuantity    Int?
+  StockLimit       Int?
+  ManufactureDate  DateTime?
+  ExpirationDate   DateTime?
+  IsAvailable      Boolean  @default(true)
+
+  PatientMedications PatientMedications[]
+}
+
+model Patient {
+  PatientId     String    @id
+  Fullname      String
+  Mobile        String    @unique
+  NationalID    String?   @unique
+  Email         String?   @unique
+  DateCreated   DateTime  @default(now())
+
+  CustomInquiries CustomInquiry[]
+  PatientMedications PatientMedications[]
+}
+
+model CustomInquiry {
+  CustomInquiryId String   @id
+  PatientId       String
+  ImageUpload     String?
+  Prescription    String
+  Description     String
+  Status          String   @default("pending")
+  DateCreated     DateTime @default(now())
+
+  Patient         Patient  @relation(fields: [PatientId], references: [PatientId], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model PatientMedications {
+  PatientMedicationId String   @id
+  PatientId           String
+  MedicationId        String
+  Quantity            Int?
+
+  Patient             Patient   @relation(fields: [PatientId], references: [PatientId], onDelete: NoAction, onUpdate: NoAction)
+  Medication          Medication @relation(fields: [MedicationId], references: [MedicationId], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Pharmacy {
+  PharmacyId        String   @id
+  Name              String
+  Content           String
+  PharmacyThumbnail String?
+  Location          String?
+  Email             String?  @unique
+  Phone             String?  @unique
+  Website           String?
+  LicenseNumber     String?  @unique
+  DateCreated       DateTime @default(now())
+}
+
+model User {
+  UserId      String   @id @unique
+  Fullname    String
+  Mobile      String   @unique
+  Email       String   @unique
+  Password    String
+  Role        String   // e.g., 'admin', 'staff'
+  IsActive    Boolean  @default(true)
+  LastLoginAt DateTime?
+  DateCreated DateTime @default(now())
+}
+
+model ContactMessage {
+  MessageId  String   @id
+  Fullname   String
+  Email      String
+  Mobile     String?
+  Message    String
+  DateSent   DateTime @default(now())
+}
