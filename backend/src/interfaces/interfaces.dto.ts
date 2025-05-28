@@ -56,18 +56,15 @@ export interface UpdatePatientDto {
 }
 
 export interface CreateCustomInquiryDto {
-  PatientId: string;
   ImageUpload?: string;
   Prescription: string;
   Description: string;
-  Status?: string; // e.g., "pending", "reviewed"
 }
 
 export interface UpdateCustomInquiryDto {
   ImageUpload?: string;
   Prescription?: string;
   Description?: string;
-  Status?: string;
 }
 
 export interface CustomInquiryResponseDto {
@@ -141,9 +138,6 @@ export interface UpdateUserDto {
   Fullname?: string;
   Mobile?: string;
   Email?: string;
-  Password?: string;
-  Role?: string;
-  IsActive?: boolean;
 }
 
 export interface UserResponseDto {
@@ -172,3 +166,10 @@ export interface ContactMessageResponseDto {
   Message: string;
   DateSent: Date;
 }
+
+export interface LoginDto {
+  Email: string;
+  Password: string;
+}
+
+export interface PatientData extends CreatePatientDto, CreateCustomInquiryDto {}

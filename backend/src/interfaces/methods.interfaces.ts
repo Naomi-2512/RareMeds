@@ -1,11 +1,11 @@
-import { CustomInquiry, Medication, Patient, Pharmacy, User } from "./interfaces";
-import { UpdateMedicationDto, UpdatePatientDto, UpdatePharmacyDto, UpdateUserDto } from "./interfaces.dto";
+import { ContactMessage, CustomInquiry, Medication, Patient, Pharmacy, User } from "@prisma/client";
+import { CreateMedicationDto, CreatePatientDto, CreatePharmacyDto, LoginDto, PatientData, UpdateMedicationDto, UpdatePatientDto, UpdatePharmacyDto, UpdateUserDto } from "./interfaces.dto";
 import { ServiceResult } from "./services.results/service.result";
 
 
 //medication interface
 export interface IMedicationService {
-  createMedication(medication: Medication): Promise<ServiceResult<null>>;
+  createMedication(medication: CreateMedicationDto): Promise<ServiceResult<null>>;
   updateMedicationByMedicationId(MedicationId: string, medication: UpdateMedicationDto): Promise<ServiceResult<null>>;
   deleteMedicationByMedicationId(MedicationId: string): Promise<ServiceResult<null>>;
   getMedicationByMedicationId(MedicationId: string): Promise<ServiceResult<Medication>>;
@@ -14,7 +14,7 @@ export interface IMedicationService {
 
 //patient interface
 export interface IPatientService {
-  createPatient(patient: Patient): Promise<ServiceResult<null>>;
+  createPatient(patient: PatientData): Promise<ServiceResult<null>>;
   updatePatientByPatientId(PatientId: string, patient: UpdatePatientDto): Promise<ServiceResult<null>>;
   deletePatientByPatientId(PatientId: string): Promise<ServiceResult<null>>;
   getPatientByPatientId(PatientId: string): Promise<ServiceResult<Patient>>;
@@ -23,7 +23,6 @@ export interface IPatientService {
 
 //custom inquiry interface
 export interface ICustomInquiryService {
-  createCustomInquiry(customInquiry: CustomInquiry): Promise<ServiceResult<null>>;
   getCustomInquiryByCustomInquiryId(CustomInquiryId: string): Promise<ServiceResult<CustomInquiry>>;
   getAllCustomInquiries(): Promise<ServiceResult<CustomInquiry>>;
 }
@@ -40,7 +39,7 @@ export interface IUserService {
 
 //pharmacy interface
 export interface IPharmacyService {
-  createPharmacy(pharmacy: Pharmacy): Promise<ServiceResult<null>>;
+  createPharmacy(pharmacy: CreatePharmacyDto): Promise<ServiceResult<null>>;
   updatePharmacyByPharmacyId(PharmacyId: string, pharmacy: UpdatePharmacyDto): Promise<ServiceResult<null>>;
   deletePharmacyByPharmacyId(PharmacyId: string): Promise<ServiceResult<null>>;
   getPharmacyByPharmacyId(PharmacyId: string): Promise<ServiceResult<Pharmacy>>;
@@ -53,3 +52,15 @@ export interface IPharmacyService {
 //   getInquiryMedicationByInquiryMedicationId(InquiryMedicationId: string): Promise<ServiceResult<InquiryMedication>>;
 //   getAllInquiryMedications(): Promise<ServiceResult<InquiryMedication>>;
 // }
+
+//contact interface 
+
+export interface IContactMessageService {
+  createContactMessage(contactMessage: ContactMessage): Promise<ServiceResult<null>>;
+}
+
+//auth interface
+export interface IAuthService {
+  login(login: LoginDto): Promise<ServiceResult<null>>;
+  logout(): Promise<ServiceResult<null>>;
+}
